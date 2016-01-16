@@ -1,9 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="co.ommu.mlibjogja.MainActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/actionSimple"
         android:orderInCategory="100"
+        android:title="@string/labelSimple"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionAdvance"
+        android:orderInCategory="100"
+        android:title="@string/labelAdvance"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionSetting"
+        android:orderInCategory="100"
+        android:title="@string/labelSettings"
         app:showAsAction="never" />
 </menu>
