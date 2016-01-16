@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="spinnerCategory">
+        <item>Judul</item>
+        <item>Peneribit</item>
+        <item>Penulis</item>
+        <item>Subyek</item>
+    </array>
+</resources>
