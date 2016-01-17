@@ -28,6 +28,10 @@ import co.ommu.mlibjogja.components.Utility;
 import co.ommu.mlibjogja.models.ResultModel;
 import co.ommu.mlibjogja.views.ResultView;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+
 public class ResultActivity extends AppCompatActivity {
 
     public ArrayList<ResultModel> array = new ArrayList<ResultModel>();
@@ -138,10 +142,9 @@ public class ResultActivity extends AppCompatActivity {
         }
 
         AsynRestClient.get(getApplicationContext(), url, null, new JsonHttpResponseHandler() {
-            @Override
             public void onSuccess(JSONObject response) {
                 // TODO Auto-generated method stub
-                super.onSuccess(response);
+                //super.onSuccess(response);
                 try {
                     JSONArray ja = response.getJSONArray("data");
                     for (int i = 0; i < ja.length(); i++) {
@@ -179,10 +182,10 @@ public class ResultActivity extends AppCompatActivity {
                 }
             }
 
-            @Override
-            public void onFailure(int statusCode, PreferenceActivity.Header[] headers, Throwable error, String content) {
+
+            public void onFailure(int statusCode, Header[] headers, Throwable error, String content) {
                 // TODO Auto-generated method stub
-                super.onFailure(statusCode, headers, error, content);
+                //super.onFailure(statusCode, headers, error, content);
                 if (firstTimeLoad) {
                     if (dialog.isShowing()) {
                         dialog.dismiss();
