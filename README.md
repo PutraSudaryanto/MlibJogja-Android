@@ -1,4 +1,4 @@
-# Mobile-Library-Jogja-Android-Application
+# Mobile Library Jogja (Mlib Jogja) Android Application [Unofficial]
 
 #### API
 * **Search** http://mlib.bpadjogja.info/book/search/keyword?&title=title[text]&author=author[text]&publisher=publisher[text]&subject=subject[text]&data=JSON
