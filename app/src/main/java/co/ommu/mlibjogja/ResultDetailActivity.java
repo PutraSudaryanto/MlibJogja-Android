@@ -1,14 +1,18 @@
 package co.ommu.mlibjogja;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,23 +21,33 @@ import android.widget.Toast;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import co.ommu.mlibjogja.components.AsynRestClient;
 import co.ommu.mlibjogja.components.Utility;
 import co.ommu.mlibjogja.models.ResultDetailModel;
+import co.ommu.mlibjogja.models.ResultLocationModel;
+import co.ommu.mlibjogja.views.ResultLocationView;
 
 public class ResultDetailActivity extends AppCompatActivity {
 
+    public boolean loadingMore = false, firstTimeLoad = true;
+    public ArrayList<ResultLocationModel> array = new ArrayList<ResultLocationModel>();
     ResultDetailModel item;
     ListView listResultDetail;
     TextView textEmpty;
+    View footerView;
     LinearLayout layoutDetail;
     ProgressDialog dialog;
-    String url, location,
+    ResultLocationView adap;
+    String url, itemCount = "0", pageSize = "0", nextPage = "", location,
             cover, title, description, author, publisher, publish_year, paging, subject, isbn, call_number;
     static String id;
+    int offset;
     //SettingFunction setting = new SettingFunction();
 
     @Override
@@ -51,6 +65,8 @@ public class ResultDetailActivity extends AppCompatActivity {
             Log.i("url", url);
             getResult();
         }
+
+        footerView = ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.content_footer, null, false);
     }
 
     private void getResult() {
@@ -82,6 +98,25 @@ public class ResultDetailActivity extends AppCompatActivity {
                     isbn = item.isbn = jo.getString("isbn");
                     call_number = item.call_number = jo.getString("call_number");
                     Log.i("publish_year", item.publish_year);
+
+                    JSONObject jo1 = response.getJSONObject("location");
+                    JSONArray ja = jo1.getJSONArray("data");
+                    for (int i = 0; i < ja.length(); i++) {
+                        ResultLocationModel data = new ResultLocationModel();
+                        data.name = ja.getJSONObject(i).getString("name");
+                        data.address = ja.getJSONObject(i).getString("address");
+                        data.book = ja.getJSONObject(i).getString("book");
+                        data.point = ja.getJSONObject(i).getString("point");
+                        array.add(data);
+                    }
+
+                    JSONObject jso = jo1.getJSONObject("pager");
+                    itemCount = jso.getString("itemCount");
+                    nextPage = jso.getString("nextPage");
+                    pageSize = jso.getString("pageSize");
+                    url = jo1.getString("nextpage");
+
+                    Log.i("url2", url);
                     buildWidget();
                     if (dialog.isShowing()) {
                         dialog.dismiss();
@@ -93,8 +128,8 @@ public class ResultDetailActivity extends AppCompatActivity {
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }
-                    listResultDetail.setVisibility(View.GONE);
-                    textEmpty.setVisibility(View.VISIBLE);
+                    //listResultDetail.setVisibility(View.GONE);
+                    //textEmpty.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -111,6 +146,23 @@ public class ResultDetailActivity extends AppCompatActivity {
     }
 
     private void buildWidget() {
+        textEmpty = (TextView) findViewById(R.id.textEmpty);
+        listResultDetail = (ListView) findViewById(R.id.listResultDetail);
+
+        if (firstTimeLoad) {
+            if (Integer.parseInt(itemCount) > 20) {
+                listResultDetail.addFooterView(footerView);
+                loadMoreData();
+            }
+            adap = new ResultLocationView(array, getApplicationContext());
+            listResultDetail.setAdapter(adap);
+
+        } else {
+            adap.notifyDataSetChanged();
+        }
+
+        firstTimeLoad = false;
+        loadingMore = false;
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         TextView tvDesc = (TextView) findViewById(R.id.tvDesc);
         TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
@@ -130,6 +182,39 @@ public class ResultDetailActivity extends AppCompatActivity {
         tvIsbn.setText(isbn);
         tvCall.setText(call_number);
         layoutDetail.setVisibility(View.VISIBLE);
+    }
+
+    public void loadMoreData() {
+        // TODO Auto-generated method stub
+
+        listResultDetail.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView arg0, int arg1) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int lastInScreen = firstVisibleItem + visibleItemCount;
+                if ((lastInScreen != 0 && totalItemCount != 0) && (lastInScreen == totalItemCount) && !(loadingMore)) {
+                    offset += Integer.parseInt(pageSize);
+                    if (offset < Integer.parseInt(itemCount)) {
+                        loadingMore = true;
+                        getResult();
+
+                    } else {
+                        if (offset > Integer.parseInt(itemCount) || offset == Integer.parseInt(itemCount))
+                            removeFooter();
+                    }
+                }
+            }
+        });
+    }
+
+    public void removeFooter() {
+        // TODO Auto-generated method stub
+        loadingMore = true;
+        listResultDetail.removeFooterView(footerView);
     }
 
     @Override
