@@ -93,7 +93,6 @@ public class ResultActivity extends AppCompatActivity {
 
     public void loadMoreData() {
         // TODO Auto-generated method stub
-
         listResult.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView arg0, int arg1) {
@@ -174,8 +173,8 @@ public class ResultActivity extends AppCompatActivity {
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }
-                    //listResult.setVisibility(View.GONE);
-                    //textEmpty.setVisibility(View.VISIBLE);
+                    listResult.setVisibility(View.GONE);
+                    textEmpty.setVisibility(View.VISIBLE);
                 }
             }
 

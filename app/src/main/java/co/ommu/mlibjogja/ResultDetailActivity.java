@@ -70,15 +70,17 @@ public class ResultDetailActivity extends AppCompatActivity {
     }
 
     private void getResult() {
-        dialog = ProgressDialog.show(ResultDetailActivity.this, "", "Please wait...", true, true);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface arg0) {
-                // TODO Auto-generated method stub
-                AsynRestClient.cancelAllRequests(getApplicationContext());
-                onBackPressed();
-            }
-        });
+        if (firstTimeLoad) {
+            dialog = ProgressDialog.show(ResultDetailActivity.this, "", "Please wait...", true, true);
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface arg0) {
+                    // TODO Auto-generated method stub
+                    AsynRestClient.cancelAllRequests(getApplicationContext());
+                    onBackPressed();
+                }
+            });
+        }
         AsynRestClient.get(getApplicationContext(), url, null, new JsonHttpResponseHandler() {
             //@Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -128,8 +130,8 @@ public class ResultDetailActivity extends AppCompatActivity {
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }
-                    //listResultDetail.setVisibility(View.GONE);
-                    //textEmpty.setVisibility(View.VISIBLE);
+                    listResultDetail.setVisibility(View.GONE);
+                    textEmpty.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -137,9 +139,13 @@ public class ResultDetailActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable error, String content) {
                 // TODO Auto-generated method stub
                 //super.onFailure(statusCode, headers, error, content);
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+                if (firstTimeLoad) {
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    loadingMore = false;
                 }
             }
         });
@@ -149,20 +155,6 @@ public class ResultDetailActivity extends AppCompatActivity {
         textEmpty = (TextView) findViewById(R.id.textEmpty);
         listResultDetail = (ListView) findViewById(R.id.listResultDetail);
 
-        if (firstTimeLoad) {
-            if (Integer.parseInt(itemCount) > 20) {
-                listResultDetail.addFooterView(footerView);
-                loadMoreData();
-            }
-            adap = new ResultLocationView(array, getApplicationContext());
-            listResultDetail.setAdapter(adap);
-
-        } else {
-            adap.notifyDataSetChanged();
-        }
-
-        firstTimeLoad = false;
-        loadingMore = false;
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         TextView tvDesc = (TextView) findViewById(R.id.tvDesc);
         TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
@@ -182,6 +174,21 @@ public class ResultDetailActivity extends AppCompatActivity {
         tvIsbn.setText(isbn);
         tvCall.setText(call_number);
         layoutDetail.setVisibility(View.VISIBLE);
+
+        if (firstTimeLoad) {
+            if (Integer.parseInt(itemCount) > 20) {
+                listResultDetail.addFooterView(footerView);
+                loadMoreData();
+            }
+            adap = new ResultLocationView(array, getApplicationContext());
+            listResultDetail.setAdapter(adap);
+
+        } else {
+            adap.notifyDataSetChanged();
+        }
+
+        firstTimeLoad = false;
+        loadingMore = false;
     }
 
     public void loadMoreData() {
