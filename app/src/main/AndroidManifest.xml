@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".AdvanceSearchActivity" />
         <activity android:name=".ResultActivity" />
+        <activity android:name=".ResultDetailActivity" />
         <activity android:name=".SettingActivity" />
     </application>
 

@@ -1,105 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linBg"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#f8f8f8"
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/linBg"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#f8f8f8"
-        android:orientation="horizontal" >
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="3"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="3"
-            android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:text="JUDUL BUKU"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="JUDUL BUKU"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Pengarang"
+            android:textColor="#959595" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="5dp"
-                    android:scaleType="centerInside"/>
-
-                <TextView
-                    android:id="@+id/tvAuthor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nama Pengarang"
-                    android:textColor="#959595" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="5dp"
-                    android:scaleType="centerInside" />
-
-                <TextView
-                    android:id="@+id/tvPublisher"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="Nama Penerbit"
-                    android:textColor="#959595" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="1dp"
-            android:layout_height="fill_parent"
-            android:background="#dedede" />
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="#ededed"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/tv_total_position"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="5"
-                android:textColor="#393939"
-                android:textSize="28sp" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_total_position"
-                android:gravity="center_horizontal"
-                android:text="Lokasi"
-                android:textColor="#959595" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvPublisher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Nama Penerbit"
+            android:textColor="#959595" />
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:background="#dedede" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="#ededed"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_total_position"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="5"
+            android:textColor="#393939"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_total_position"
+            android:gravity="center_horizontal"
+            android:text="Lokasi"
+            android:textColor="#959595" />
+    </RelativeLayout>
+</LinearLayout>

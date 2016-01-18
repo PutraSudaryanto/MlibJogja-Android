@@ -34,8 +34,8 @@ import org.apache.http.Header;
 
 public class ResultActivity extends AppCompatActivity {
 
-    public ArrayList<ResultModel> array = new ArrayList<ResultModel>();
-    public boolean loadingMore = false, firstTimeLoad = true;
+
+    public boolean loadingMore = false, firstTimeLoad = true;public ArrayList<ResultModel> array = new ArrayList<ResultModel>();
     ListView listResult;
     TextView textEmpty;
     View footerView;
