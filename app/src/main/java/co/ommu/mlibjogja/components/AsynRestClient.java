@@ -27,7 +27,7 @@ public class AsynRestClient {
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
-        return Utility.bookSearchURL + relativeUrl;
+        return Utility.baseURL + relativeUrl;
     }
 
     public static void cancelAllRequests(Context context) {

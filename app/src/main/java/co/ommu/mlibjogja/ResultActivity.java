@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +52,7 @@ public class ResultActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             keyword = getIntent().getExtras().getString("keyword");
-            url = Utility.bookSearchURL + "/keyword/" + getIntent().getExtras().getString("url") + "/data/JSON";
+            url = Utility.bookSearchPathURL + "/" + getIntent().getExtras().getString("url") + "/data/JSON";
             Log.i("url", url);
             getResult();
         }
@@ -78,19 +78,15 @@ public class ResultActivity extends AppCompatActivity {
 
         firstTimeLoad = false;
 
-        /*
-        listResult.setOnItemClickListener(new OnItemClickListener() {
-
+        listResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 // TODO Auto-generated method stub
-                startActivity(new Intent(getApplicationContext(),
-                    DetailViewActivity.class).putExtra("id",
-                    array.get(arg2).id).putExtra("loc",
-                    array.get(arg2).location));
+                startActivity(new Intent(getApplicationContext(), ResultDetailActivity.class)
+                        .putExtra("id", array.get(arg2).id)
+                        .putExtra("loc", array.get(arg2).location));
             }
         });
-        */
 
         loadingMore = false;
     }
@@ -142,7 +138,8 @@ public class ResultActivity extends AppCompatActivity {
         }
 
         AsynRestClient.get(getApplicationContext(), url, null, new JsonHttpResponseHandler() {
-            public void onSuccess(JSONObject response) {
+            //@Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // TODO Auto-generated method stub
                 //super.onSuccess(response);
                 try {
@@ -162,7 +159,7 @@ public class ResultActivity extends AppCompatActivity {
                     itemCount = jso.getString("itemCount");
                     nextPage = jso.getString("nextPage");
                     pageSize = jso.getString("pageSize");
-                    url = "http://mlib.bpadjogja.info" + response.getString("nextpage");
+                    url = response.getString("nextpage");
                     Log.i("url2", url);
                     buildWidget();
                     if (dialog.isShowing()) {
@@ -182,7 +179,7 @@ public class ResultActivity extends AppCompatActivity {
                 }
             }
 
-
+            //@Override
             public void onFailure(int statusCode, Header[] headers, Throwable error, String content) {
                 // TODO Auto-generated method stub
                 //super.onFailure(statusCode, headers, error, content);
