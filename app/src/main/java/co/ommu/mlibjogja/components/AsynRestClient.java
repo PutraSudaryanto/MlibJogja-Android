@@ -21,11 +21,6 @@ public class AsynRestClient {
         client.post(context, getAbsoluteUrl(url), params, responseHandler);
     }
 
-    public static void post_newpass(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.setSSLSocketFactory(MySSLSocketFactory.getFixedSocketFactory());
-        client.post(url, params, responseHandler);
-    }
-
     private static String getAbsoluteUrl(String relativeUrl) {
         return Utility.baseURL + relativeUrl;
     }
